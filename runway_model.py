@@ -34,14 +34,15 @@ def setup(opts):
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     options = Options()
     parser = options.initialize(parser)
+    name = 'Labels2Landscapes_512'
+    checkpoints_dir = os.path.join('.', 'checkpoints')
+    parser.set_defaults(name=name, checkpoints_dir=checkpoints_dir)
     options.parser = parser
-    name = opts['checkpoints_root'].split('/')[-1]
-    checkpoints_dir = os.path.join(opts['checkpoints_root'], '..')
-    parser.set_defaults(name=name)
-    parser.set_defaults(checkpoints_dir=checkpoints_dir)
     opt = options.parse()
     opt.name = name
     opt.checkpoints_dir = checkpoints_dir
+    opt.gpu_ids = "0"
+    device = torch.device('cuda:0')
     model = Pix2PixModel(opt)
     model.eval()
     return model
